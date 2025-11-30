@@ -1,0 +1,4 @@
+aiohttp
+pillow
+pytesseract
+requests

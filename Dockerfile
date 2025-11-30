@@ -1,4 +1,4 @@
-# Dockerfile — Ubuntu base, Python + Tesseract
+# # Dockerfile — Ubuntu base, Python + Tesseract
 FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -7,7 +7,6 @@ ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update && apt-get install -y \
     python3 \
     python3-pip \
-    python3-venv \
     tesseract-ocr \
     libtesseract-dev \
     libjpeg-dev \
@@ -18,19 +17,21 @@ RUN apt-get update && apt-get install -y \
 # Create app user and directory
 RUN useradd -m botuser
 WORKDIR /app
-COPY requirements.txt /app/requirements.txt
+
+# Copy whole repo so test_env.py + bot.py are available
+COPY . /app
 
 # Install python deps
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install -r /app/requirements.txt
 
-# Copy bot code
-COPY bot.py /app/bot.py
+# Permissions and non-root user
 RUN chown -R botuser:botuser /app
 USER botuser
 
-# Expose port for health check
+# Port for health check
 ENV PORT=8080
 EXPOSE 8080
 
+# Default start (can be overridden on Render)
 CMD ["python3", "bot.py"]

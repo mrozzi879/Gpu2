@@ -1,4 +1,4 @@
-# # Dockerfile — Ubuntu base, Python + Tesseract
+# Dockerfile — Ubuntu base, Python + Tesseract
 FROM ubuntu:22.04
 
 ENV DEBIAN_FRONTEND=noninteractive
@@ -29,9 +29,9 @@ RUN python3 -m pip install -r /app/requirements.txt
 RUN chown -R botuser:botuser /app
 USER botuser
 
-# Port for health check
-ENV PORT=8080
-EXPOSE 8080
+# Use the same PORT that Render sets (10000) — or set Render env to match this
+ENV PORT=10000
+EXPOSE 10000
 
-# Default start (can be overridden on Render)
-CMD ["python3", "bot.py"]
+# Start the bot (unbuffered stdout/stderr so logs appear live)
+CMD ["python3", "-u", "bot.py"]

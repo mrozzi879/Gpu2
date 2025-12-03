@@ -1,3 +1,4 @@
+# run_bot_debug.py — wrapper: runs bot.py and prints any exception, then stays alive
 import runpy, traceback, time, sys
 
 print("Starting run_bot_debug.py")
@@ -10,7 +11,6 @@ except Exception:
     traceback.print_exc()
     print("=== End exception ===")
     sys.stdout.flush()
-
     print("Keeping container alive for debugging...")
     sys.stdout.flush()
     while True:
